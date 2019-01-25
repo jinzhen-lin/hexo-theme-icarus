@@ -70,7 +70,8 @@ module.exports = function(hexo) {
 
   function patchCodeHighlight(content) {
     const $ = cheerio.load(content, {
-      decodeEntities: false
+      decodeEntities: false,
+      xmlMode: true
     });
     $('figure.highlight').addClass('hljs');
     $('figure.highlight .code .line span').each(function() {
@@ -81,12 +82,12 @@ module.exports = function(hexo) {
       }
     });
     $("pre code.hljs").each(function(i, block) {
-      duplicateMultilineNodes(block);
-      var html_content = $(this).html();
-      html_content = addLineNumbersBlockFor(html_content);
-      $(this).html(html_content);
+      //duplicateMultilineNodes(block);
+      //var html_content = $(this).html();
+      //html_content = addLineNumbersBlockFor(html_content);
+      //$(this).html(html_content);
     });
-    $("pre code.hljs").parent("pre").addClass("code-hljs-pre");
+    //$("pre code.hljs").parent("pre").addClass("code-hljs-pre");
 
     return $.html();
   }

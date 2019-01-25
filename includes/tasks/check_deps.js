@@ -23,7 +23,7 @@ const missingDeps = [
     'hexo-generator-index',
     'hexo-generator-tag',
     'hexo-renderer-ejs',
-    'hexo-renderer-marked',
+   // 'hexo-renderer-marked',
     'hexo-renderer-stylus',
 ].map(checkDependency).some(installed => !installed);
 if (missingDeps) {

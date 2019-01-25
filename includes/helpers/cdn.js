@@ -9,22 +9,24 @@
 const cdn_providers = {
     cdnjs: 'https://cdnjs.cloudflare.com/ajax/libs/${ package }/${ version }/${ filename }',
     jsdelivr: 'https://cdn.jsdelivr.net/npm/${ package }@${ version }/${ filename }',
-    unpkg: 'https://unpkg.com/${ package }@${ version }/${ filename }'
+    unpkg: 'https://unpkg.com/${ package }@${ version }/${ filename }',
+    ljz: 'https://cdn.staticfile.org/${ package }/${ version }/${ filename }'
 };
 
 const font_providers = {
-    google: 'https://fonts.googleapis.com/${ type }?family=${ fontname }'
+    google: 'https://fonts.googleapis.com/${ type }?family=${ fontname }',
+    loli: 'https://fonts.loli.net/${ type }?family=${ fontname }'
 };
 
 const icon_providers = {
-    fontawesome: 'https://use.fontawesome.com/releases/v5.4.1/css/all.css'
+    fontawesome: 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.6.1/css/all.min.css'
 };
 
 module.exports = function (hexo) {
     hexo.extend.helper.register('cdn', function (_package, version, filename) {
         let provider = hexo.extend.helper.get('get_config').bind(this)('providers.cdn');
         // cdn.js does not follow a GitHub npm style like jsdeliver and unpkg do. Patch it!
-        if (provider === 'cdnjs' || provider.startsWith('[cdnjs]')) {
+        if (provider === 'cdnjs' || provider.startsWith('[cdnjs]') || provider === 'ljz') {
             if (provider.startsWith('[cdnjs]')) {
                 provider = provider.substr(7);
             }

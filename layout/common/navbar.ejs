@@ -33,10 +33,13 @@
                     <% } %>
                 <% } %>
                 <% if (get_config('toc') === true && has_widget('toc') && (page.layout === 'page' || page.layout === 'post')) { %>
-                <a class="navbar-item is-hidden-tablet catalogue" title="<%= _p('widget.catalogue', Infinity) %>" href="javascript:;">
+                <a class="navbar-item is-hidden-desktop950 catalogue" title="<%= _p('widget.catalogue', Infinity) %>" href="javascript:;">
                     <i class="fas fa-list-ul"></i>
                 </a>
                 <% } %>
+                <a class="navbar-item is-hidden-desktop950 navbar-profile-icon" target="_blank" title="简介" href="javascript:;">
+                    <i class="fas fa-user-circle"></i>
+                </a>
                 <% if (has_config('search.type')) { %>
                 <a class="navbar-item search" title="<%= __('search.search') %>" href="javascript:;">
                     <i class="fas fa-search"></i>

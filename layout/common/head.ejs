@@ -21,11 +21,13 @@
 <link rel="icon" href="<%- url_for(get_config('favicon')) %>">
 <% } %>
 
-<%- _css(cdn('bulma', '0.7.2', 'css/bulma.css')) %>
+<%- _css(cdn('bulma', '0.7.2', 'css/bulma.min.css')) %>
 <%- _css(iconcdn()) %>
 <%- _css(fontcdn('Ubuntu:400,600|Source+Code+Pro')) %>
-<%- _css(cdn('highlight.js', '9.12.0', 'styles/' + get_config('article.highlight') + '.css')) %>
 
+<!--
+<%- _css(cdn('highlight.js', '9.12.0', 'styles/' + get_config('article.highlight') + '.css')) %>
+-->
 <% if (has_config('plugins')) { %>
     <% for (let plugin in get_config('plugins')) { %>
     <%- partial('plugin/' + plugin, { head: true, plugin: get_config('plugins')[plugin] }) %>
@@ -33,3 +35,9 @@
 <% } %>
 
 <%- _css('css/style') %>
+
+<%- _js(cdn('jquery', '3.3.1', 'dist/jquery.min.js')) %>
+<%- _js('js/ljz-script', true) %>
+<link rel="stylesheet" href="/ljz-style.css">
+
+<%- partial("common/highlight") %>

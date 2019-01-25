@@ -2,17 +2,21 @@
     <div class="container">
         <div class="level">
             <div class="level-start has-text-centered-mobile">
-                <a class="footer-logo is-block has-mb-6" href="<%- url_for('/') %>">
-                <% if (has_config('logo.text') && get_config('logo.text')) { %>
-                    <%= get_config('logo.text') %>
-                <% } else { %>
-                    <img src="<%- url_for(get_config('logo')) %>" alt="<%= get_config('title') %>" height="28">
-                <% } %>
-                </a>
-                <p class="is-size-7">
-                &copy; <%= date(new Date(), 'YYYY') %> <%= get_config('author') || get_config('title') %>&nbsp;
-                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
-                        href="http://github.com/ppoffice/hexo-theme-icarus">Icarus</a>
+              
+                <p>
+                  &copy; <%= date(new Date(), 'YYYY') %> <%= get_config('author') || get_config('title') %>&nbsp;
+                </p>
+                <p>
+                  <a target="_blank" href="http://www.miitbeian.gov.cn" rel="external nofollow noopener noreferrer">闽ICP备16032056号</a>
+                </p>
+                <p>
+                  CDN&nbsp;by&nbsp;
+                    <a target="_blank" href="https://www.upyun.com" rel="external nofollow noopener noreferrer">
+                      <img src="https://cdn.shup.cn/upyun.png" width="60" class="upyun">
+                    </a>
+                </p>
+                <p>
+                  Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus">Icarus</a>
                 </p>
             </div>
             <div class="level-end">

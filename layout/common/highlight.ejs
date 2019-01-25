@@ -1,0 +1,228 @@
+<% // 是否开启了highlight %>
+<% var highlight_enable = config.highlight && config.highlight.enable; %>
+<% // 是否开启了hljs %>
+<% var new_style_enable = config.highlight.new_style && config.highlight.new_style.enable; %>
+
+
+<% // 是否强制使用原始配色（开启了highlight.line_number或者没开启highlight.hljs） %>
+<% var force_origin = highlight_enable && (config.highlight.line_number || !config.highlight.hljs); %>
+<% // 是否使用原始配色 %>
+<% var hl_origin = force_origin || (highlight_enable && !new_style_enable) %>
+<% // 是否使用新配色 %>
+<% var hl_new = highlight_enable && new_style_enable && !hl_origin %>
+
+
+
+
+<% if (hl_new) { %>
+  <% var hljs_style = config.highlight.new_style.style; %>
+  <% var hljs_recolor = config.highlight.new_style.recolor; %>
+  <% var hljs_overflow = config.highlight.new_style.overflow; %>
+  
+  <% var hljs_bgcolor = config.highlight.new_style.bgcolor; %>
+  <% var hljs_num_bgcolor = config.highlight.new_style.num_bgcolor; %>
+  <% var hljs_num_color = config.highlight.new_style.num_color; %>
+
+  <% var hljs_border_radius = config.highlight.new_style.border_radius; %>
+  <% var hljs_splitline_color = config.highlight.new_style.splitline_color; %>
+
+  <% if (hljs_style === "cmd") { %>
+  <%   hljs_style = "atom-one-light"; %>
+  <%   hljs_recolor = true; %>
+  <%   hljs_bgcolor = "rgba(102, 128, 153, 0.05)"; %>
+  <%   hljs_num_bgcolor = "rgba(102, 128, 153, 0.05)"; %>
+  <%   hljs_num_color = "rgba(102, 128, 153, 0.4)"; %>
+  <%   hljs_border_radius = "5px"; %>
+  <%   hljs_splitline_color = "transparent"; %>
+  <% } %>
+  
+  <%- _css(cdn('highlight.js', '9.13.1', 'styles/' + hljs_style + '.min.css')) %>
+  <style>
+    pre.code-hljs-pre {
+      margin: 0 0 !important;
+      padding: 0 !important;
+    }
+    
+    pre code.hljs {
+      margin: 0;
+      padding: 0;
+    }
+
+    pre code.hljs ol.hljs-ol-code {
+      list-style: none outside none;
+      margin: 0;
+      padding: 10px 0;
+    }
+    
+    pre code.hljs ol li {
+      margin: 0;
+    }
+    
+    pre code.hljs ol.hljs-ol-num {
+      position: absolute;
+      margin: 0;
+      list-style: none outside none;
+      text-align: right;
+      padding: 10px 0;
+    }
+
+    pre code.hljs {
+      counter-reset: ln_item;
+    }
+
+    pre code.hljs ol li:before {
+      display: none;
+      counter-increment: ln_item;
+      content: counter(ln_item);
+      text-align: right;
+      padding-left: 10px;
+      padding-right: 10px;
+      margin: 0;
+      white-space: pre;
+    }
+
+    pre code.hljs ol a {
+      color: inherit;
+    }
+  </style>
+  
+  <style>
+
+
+  <% var ln = !!config.highlight.new_style.line_number; %>
+  <% var scroll = (config.highlight.new_style.overflow == "scroll"); %>
+
+  <% // hljs-ol-num 的显示情况分类 %>
+  <% if (ln && scroll) { %>
+    pre code.hljs ol.hljs-ol-num {
+      display: block;
+      margin: 0;
+    }
+    
+    pre code.hljs ol.hljs-ol-num li:before {
+      display: inline-block;
+    }
+
+    pre code.hljs ol.hljs-ol-code {
+      margin-left: 50px;
+    }
+  <% } else { %>
+    pre code.hljs ol.hljs-ol-num {
+      display: none;
+    }
+  <% } %> 
+
+
+  <% if (ln && !scroll) { %>
+    <% // table 是为了代码折行时第二行的缩进 %>
+    <% // border-spacing 主要是为了行号与代码之间分割线的显示 %>
+    pre code.hljs ol.hljs-ol-code {
+      border-spacing: 10px 0;
+      display: table;
+    }
+  
+    pre code.hljs ol.hljs-ol-code li {
+      display: table-row;
+    }
+
+    pre code.hljs ol.hljs-ol-code li:before {
+      display: table-cell;
+      text-align: right;
+    }
+
+    pre code.hljs ol li:before {
+      padding-left: 10px;
+    }
+  <% } %> 
+
+  <% if (scroll) { %>
+    pre code.hljs ol.hljs-ol-code {
+      white-space: pre;
+      overflow-x: scroll;
+    }
+
+    pre code.hljs ol.hljs-ol-code li code {
+      padding: 0 10px;
+    }
+  <% } else { %>
+    pre code.hljs ol.hljs-ol-code {
+      word-break: break-all;
+      white-space: pre-wrap;
+    }
+    
+  <%   if (!ln) { %>
+    pre code.hljs ol.hljs-ol-code {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  <%   } %>
+    
+  <% } %>
+
+  </style>
+
+  <style>
+    <% if (hljs_border_radius) { %>
+    pre.code-hljs-pre {
+      border-radius: <%= hljs_border_radius %>;
+    }
+    <% } %>
+    
+    <% if (hljs_recolor && hljs_bgcolor) { %>
+    pre code.hljs {
+      background: <%= hljs_bgcolor %>;
+    }
+    <% } %>
+    
+    <% if (hljs_recolor && hljs_num_color) { %>
+    pre code.hljs ol.hljs-ol-num {
+      color: <%= hljs_num_color %>;
+    }
+    <% } %>
+    
+    <% if (hljs_splitline_color) { %>
+    <%   if (scroll) { %>
+    pre code.hljs ol.hljs-ol-code li {
+      border-left: 1px solid <%= hljs_splitline_color %>;
+    }
+    <%   } else { %>
+      pre code.hljs ol.hljs-ol-code li:before {
+        border-right: 1px solid <%= hljs_splitline_color %>;
+      }
+    <%   } %>
+    <% } %>
+  </style>
+  
+  <script type="text/javascript">
+    
+    $(document).ready(function() {
+      $("pre code.hljs").each(function() {
+        if (!$(this).find("ol").length) {
+          $(this).css("padding", "0 10px");
+          $(this).find("a").css("color", $(this).css("color"));
+          <% if (scroll) { %>
+            $(this).css("white-space", "pre");
+            $(this).css("overflow-x", "scroll");
+          <% } %>
+          return 0
+        }
+        
+        var num_element = $(this).find(".hljs-ol-num")[0];
+        var num_element_width = num_element.getBoundingClientRect()["width"];
+        $(this).find(".hljs-ol-code").css("margin-left", (num_element_width).toFixed(2) + "px");
+        <% if (hljs_recolor && hljs_num_bgcolor && ln) { %>
+        <%   if (scroll) { %>
+        var shadow_width = num_element_width;
+        <%   } else { %>
+        var width0 = $(this).find("ol.hljs-ol-code li")[0].getBoundingClientRect()["x"];
+        var width1 = $(this).find("ol.hljs-ol-code li code")[0].getBoundingClientRect()["x"];
+        var shadow_width = width1 - width0 - 10;
+        <%   } %>
+        shadow_width = shadow_width.toFixed(2) + "px";
+        $(this).css("box-shadow", shadow_width + " 0 0 <%= hljs_num_bgcolor %> inset");
+        <% } %>
+      });
+    });
+  </script>
+  
+<% } %>
